@@ -1,6 +1,7 @@
 package com.devsuperior.dsmeta.services;
 
 import com.devsuperior.dsmeta.dto.SaleMinDTO;
+import com.devsuperior.dsmeta.dto.SaleSummaryDTO;
 import com.devsuperior.dsmeta.entities.Sale;
 import com.devsuperior.dsmeta.repositories.SaleRepository;
 import com.devsuperior.dsmeta.services.utils.DataUtil;
@@ -39,8 +40,11 @@ public class SaleService {
 
     }
 
-    public Page<SaleMinDTO> sumary(String minDate, String maxDate, Pageable pageable) {
-     return null;
+    public Page<SaleSummaryDTO>getSummary(String minDate, String maxDate, Pageable pageable) {
+        LocalDate maxDateResult = DataUtil.getMaxDate(maxDate);
+        LocalDate minDateResult = DataUtil.getMinDate(minDate,maxDateResult);
+        //return repository.searchByNameDate(minDateResult, maxDateResult, "", pageable);
+        return repository.searchSummary(minDateResult,maxDateResult, pageable);
     }
 
 }

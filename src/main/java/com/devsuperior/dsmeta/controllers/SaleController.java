@@ -10,6 +10,7 @@ import com.devsuperior.dsmeta.dto.SaleMinDTO;
 import com.devsuperior.dsmeta.services.SaleService;
 
 import java.awt.*;
+import java.time.LocalDate;
 
 @RestController
 @RequestMapping(value = "/sales")
@@ -35,8 +36,12 @@ public class SaleController {
 	}
 
 	@GetMapping(value = "/summary")
-	public ResponseEntity<?> getSummary() {
-		// TODO
-		return null;
+	public ResponseEntity<Page<SaleMinDTO>> getSummary(
+			@RequestParam(name="minDate", defaultValue = "")  String minDate,
+			@RequestParam(name="maxDate", defaultValue = "") String maxDate,
+			Pageable pageable)
+	 {
+		Page<SaleMinDTO> page = service.sumary(minDate, maxDate, pageable);
+		return ResponseEntity.ok(page);
 	}
 }

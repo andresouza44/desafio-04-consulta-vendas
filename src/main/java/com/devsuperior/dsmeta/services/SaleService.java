@@ -3,6 +3,7 @@ package com.devsuperior.dsmeta.services;
 import com.devsuperior.dsmeta.dto.SaleMinDTO;
 import com.devsuperior.dsmeta.entities.Sale;
 import com.devsuperior.dsmeta.repositories.SaleRepository;
+import com.devsuperior.dsmeta.services.utils.DataUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -28,27 +29,18 @@ public class SaleService {
     }
 
     @Transactional(readOnly = true)
-    public Page<SaleMinDTO> findAll(String dataInicial, String dataFinal,
+    public Page<SaleMinDTO> findAll(String minDate, String maxDate,
                                     String name, Pageable pageable) {
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        LocalDate maxDate;
-        LocalDate minDate;
+        LocalDate maxDateResult = DataUtil.getMaxDate(maxDate);
+        LocalDate minDateResult = DataUtil.getMinDate(minDate,maxDateResult);
 
-        if (dataFinal.isEmpty()) {
-            maxDate = LocalDate.ofInstant(Instant.now(), ZoneId.systemDefault());
-
-        } else {
-            maxDate = LocalDate.parse(dataFinal, formatter);
-        }
-        if (dataInicial.isEmpty()) {
-            minDate = maxDate.minusYears(1);
-        } else {
-            minDate = LocalDate.parse(dataInicial, formatter);
-        }
-        return repository.searchByNameDate(minDate, maxDate, name, pageable);
-
-
+        return repository.searchByNameDate(minDateResult, maxDateResult, name, pageable);
 
     }
+
+    public Page<SaleMinDTO> sumary(String minDate, String maxDate, Pageable pageable) {
+     return null;
+    }
+
 }

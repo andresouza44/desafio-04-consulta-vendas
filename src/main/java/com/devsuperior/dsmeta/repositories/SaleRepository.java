@@ -13,7 +13,7 @@ import java.time.LocalDate;
 
 
 public interface SaleRepository extends JpaRepository<Sale, Long> {
-    @Query("SELECT new com.devsuperior.dsmeta.dto.SaleMinDTO(obj.id, obj.amount, obj.date, " +
+    @Query("SELECT new com.devsuperior.dsmeta.dto.SaleMinDTO(obj.id, obj.date, obj.amount," +
             "obj.seller.name AS sellerName) " +
             "FROM Sale obj " +
             "WHERE obj.date BETWEEN :minDate AND :maxDate " +
